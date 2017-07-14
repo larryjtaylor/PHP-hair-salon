@@ -60,20 +60,20 @@ class Stylist
     }
 
     static function find($search_id)
-        {
-            $found_stylist = null;
-            $returned_stylists = $GLOBALS['DB']->prepare("SELECT * FROM stylists WHERE id = :id");
-            $returned_stylists->bindParam(':id', $search_id, PDO::PARAM_STR);
-            $returned_stylists->execute();
-            foreach($returned_stylists as $stylist) {
-                $stylist_name = $stylist['name'];
-                $stylist_id = $stylist['id'];
-                if ($stylist_id == $search_id) {
-                  $found_stylist = new Stylist($stylist_name, $stylist_id);
-                }
+    {
+        $found_stylist = null;
+        $returned_stylists = $GLOBALS['DB']->prepare("SELECT * FROM stylists WHERE id = :id");
+        $returned_stylists->bindParam(':id', $search_id, PDO::PARAM_STR);
+        $returned_stylists->execute();
+        foreach($returned_stylists as $stylist) {
+            $stylist_name = $stylist['name'];
+            $stylist_id = $stylist['id'];
+            if ($stylist_id == $search_id) {
+              $found_stylist = new Stylist($stylist_name, $stylist_id);
             }
-            return $found_stylist;
         }
+        return $found_stylist;
+    }
 
     function update($new_name)
     {
@@ -86,5 +86,14 @@ class Stylist
         }
     }
 
+    function delete()
+    {
+        $executed = $GLOBALS['DB']->exec("DELETE FROM stylists WHERE id = {$this->getId()};");
+        if ($executed) {
+           return true;
+        } else {
+           return false;
+        }
+    }
 }
 ?>
