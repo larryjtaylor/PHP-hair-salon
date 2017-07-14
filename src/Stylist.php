@@ -15,7 +15,7 @@ class Stylist
         return $this->name;
     }
 
-    function setDescription($new_name)
+    function setName($new_name)
     {
         $this->name = (string) $new_name;
     }
