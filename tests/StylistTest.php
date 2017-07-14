@@ -110,5 +110,22 @@
              //Assert
              $this->assertEquals([], $result);
          }
+
+
+        function testFind()
+        {
+            //Arrange
+            $name = "Roger";
+            $name2 = "Melissa";
+            $test_stylist = new Stylist($name);
+            $test_stylist->save();
+            $test_stylist2 = new Stylist($name2);
+            $test_stylist2->save();
+            //Act
+            $id = $test_stylist->getId();
+            $result = Stylist::find($id);
+            //Assert
+            $this->assertEquals($test_stylist, $result);
+        }
     }
 ?>
