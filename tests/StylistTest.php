@@ -18,6 +18,7 @@
 
         function testName()
         {
+            // Arrange
             $name = 'Roger';
             $test_stylist = new Stylist($name);
 
@@ -41,6 +42,19 @@
 
             //Assert
             $this->assertEquals($new_name, $result);
+        }
+
+        function testSave()
+        {
+            //Arrange
+            $name = "Roger";
+            $test_stylist = new Stylist($name);
+
+            //Act
+            $executed = $test_stylist->save();
+
+            //Assert
+            $this->assertTrue($executed, "Task not successfully saved to database");
         }
     }
 ?>

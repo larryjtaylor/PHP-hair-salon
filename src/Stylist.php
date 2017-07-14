@@ -19,5 +19,25 @@ class Stylist
     {
         $this->name = (string) $new_name;
     }
+
+    function getID()
+    {
+        return $this->id;
+    }
+
+    function setId()
+    {
+        $this->id = $id;
+    }
+
+    function save()
+    {
+        $executed = $GLOBALS['DB']->exec("INSERT INTO stylists (description) VALUES ('{$this->getName()}');");
+        if ($executed) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>
