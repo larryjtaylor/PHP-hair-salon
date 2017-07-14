@@ -2,10 +2,6 @@
     * Input: Roger
     * Output: Roger
 
-* The program will allow a user to delete a stylist.
-    * Input: Roger
-    * Output: ''
-
 * The program will allow a user to list all stylists in the salon.
     * Input: All stylists
     * Output: Roger, Becky, Charlie, Melissa

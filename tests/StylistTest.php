@@ -16,7 +16,39 @@
     class TaskStylist extends PHPUnit_Framework_TestCase
     {
 
-        function testName()
+        protected function tearDown()
+       {
+         Stylist::deleteAll();
+       }
+
+       function testSave()
+       {
+           //Arrange
+           $name = 'Roger';
+           $test_stylist = new Stylist($name);
+
+           //Act
+           $executed = $test_stylist->save();
+
+           //Assert
+           $this->assertTrue($executed, 'Task not successfully saved to database');
+       }
+
+       function testGetId()
+       {
+           //Arrange
+           $name = "Roger";
+           $test_stylist = new Stylist($name);
+           $test_stylist->save();
+
+           //Act
+           $result = $test_stylist->getId();
+
+           //Assert
+           $this->assertEquals(true, is_numeric($result));
+       }
+
+        function testGetName()
         {
             // Arrange
             $name = 'Roger';
@@ -44,17 +76,39 @@
             $this->assertEquals($new_name, $result);
         }
 
-        function testSave()
-        {
-            //Arrange
-            $name = "Roger";
-            $test_stylist = new Stylist($name);
 
-            //Act
-            $executed = $test_stylist->save();
+        function testGetAll()
+         {
+             //Arrange
+             $name = 'Roger';
+             $test_stylist = new Stylist($name);
+             $test_stylist->save();
+             $name2 = 'Melissa';
+             $test_stylist2 = new Stylist($name2);
+             $test_stylist2->save();
 
-            //Assert
-            $this->assertTrue($executed, "Task not successfully saved to database");
-        }
+             //Act
+             $result = Stylist::getAll();
+             //Assert
+             $this->assertEquals([$test_stylist, $test_stylist2], $result);
+         }
+
+         function testDeleteAll()
+         {
+             // Arrange
+             $name = 'Roger';
+             $test_stylist = new Stylist($name);
+             $test_stylist->save();
+             $name2 = 'Melissa';
+             $test_stylist2 = new Stylist($name2);
+             $test_stylist2->save();
+
+             //Act
+             Stylist::deleteAll();
+             $result = Stylist::getAll();
+
+             //Assert
+             $this->assertEquals([], $result);
+         }
     }
 ?>
