@@ -12,12 +12,12 @@ class Client
         $this->id = $id;
     }
 
-    function getName()
+    function getClientName()
     {
         return $this->name;
     }
 
-    function setName($new_name)
+    function setClientName($new_name)
     {
         $this->name = (string) $new_name;
     }
@@ -27,6 +27,11 @@ class Client
        return $this->stylist_id;
    }
 
+   function setStylistId($new_stylist_id)
+   {
+       $this->new_stylist_id = (int) $new_stylist_id;
+   }
+
    function getId()
    {
        return $this->id;
@@ -34,7 +39,7 @@ class Client
 
     function save()
     {
-        $executed = $GLOBALS['DB']->exec("INSERT INTO clients (name, stylist_id) VALUES ('{$this->getName()}', '{$this->getStylistId()}');");
+        $executed = $GLOBALS['DB']->exec("INSERT INTO clients (client_name, stylist_id) VALUES ('{$this->getClientName()}', '{$this->getStylistId()}');");
         if ($executed) {
             $this->id= $GLOBALS['DB']->lastInsertId();
             return true;
@@ -88,7 +93,7 @@ class Client
     {
         $executed = $GLOBALS['DB']->exec("UPDATE clients SET name = '{$new_name}' WHERE id = {$this->getId()};");
         if ($executed) {
-           $this->setName($new_name);
+           $this->setClientName($new_name);
            return true;
         } else {
            return false;
