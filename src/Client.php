@@ -1,25 +1,25 @@
 <?php
 class Client
 {
-    private $name;
+    private $client_name;
     private $stylist_id;
     private $id;
 
-    function __construct($name, $stylist_id, $id = null)
+    function __construct($client_name, $stylist_id, $id = null)
     {
-        $this->name = $name;
+        $this->client_name = $client_name;
         $this->stylist_id = $stylist_id;
         $this->id = $id;
     }
 
     function getClientName()
     {
-        return $this->name;
+        return $this->client_name;
     }
 
-    function setClientName($new_name)
+    function setClientName($new_client_name)
     {
-        $this->name = (string) $new_name;
+        $this->client_name = (string) $new_client_name;
     }
 
     function getStylistId()
@@ -39,9 +39,9 @@ class Client
 
     function save()
     {
-        $executed = $GLOBALS['DB']->exec("INSERT INTO clients (client_name, stylist_id) VALUES ('{$this->getClientName()}', '{$this->getStylistId()}');");
+        $executed = $GLOBALS['DB']->exec("INSERT INTO clients (client_name, stylist_id) VALUES ('{$this->getClientName()}',  '{$this->getStylistId()}')");
         if ($executed) {
-            $this->id= $GLOBALS['DB']->lastInsertId();
+            $this->id = $GLOBALS['DB']->lastInsertId();
             return true;
         } else {
             return false;
@@ -52,11 +52,11 @@ class Client
    {
        $returned_clients = $GLOBALS['DB']->query('SELECT * FROM clients;');
         $clients = array();
-        foreach($returned_clients as $client){
-            $name = $client['name'];
+        foreach($returned_clients as $client) {
+            $client_name = $client['client_name'];
             $stylist_id = $client['stylist_id'];
             $id = $client['id'];
-            $new_client = new Client($name, $stylist_id,  $id);
+            $new_client = new Client($client_name, $stylist_id,  $id);
             array_push($clients, $new_client);
         }
         return $clients;
@@ -78,22 +78,23 @@ class Client
         $returned_clients = $GLOBALS['DB']->prepare("SELECT * FROM clients WHERE id = :id");
         $returned_clients->bindParam(':id', $search_id, PDO::PARAM_STR);
         $returned_clients->execute();
-        foreach($returned_clients as $client) {
-            $client_name = $client['name'];
+        foreach($returned_clients as $client)
+        {
+            $client_name = $client['client_name'];
             $stylist_id = $client['stylist_id'];
-            $client_id = $client['id'];
-            if ($client_id == $search_id) {
-              $found_client = new Client($client_name, $stylist_id, $client_id);
+            $id = $client['id'];
+            if ($id == $search_id) {
+              $found_client = new Client($client_name, $stylist_id, $id);
             }
         }
         return $found_client;
     }
 
-    function update($new_name)
+    function update($new_client_name)
     {
-        $executed = $GLOBALS['DB']->exec("UPDATE clients SET name = '{$new_name}' WHERE id = {$this->getId()};");
+        $executed = $GLOBALS['DB']->exec("UPDATE clients SET name = '{$new_client_name}' WHERE id = {$this->getId()};");
         if ($executed) {
-           $this->setClientName($new_name);
+           $this->setClientName($new_client_name);
            return true;
         } else {
            return false;

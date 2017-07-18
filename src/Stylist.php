@@ -1,12 +1,12 @@
 <?php
 class Stylist
 {
-    private $name;
+    private $stylist_name;
     private $id;
 
-    function __construct($name, $id = null)
+    function __construct($stylist_name, $id = null)
     {
-        $this->name = $name;
+        $this->stylist_name = $stylist_name;
         $this->id = $id;
     }
 
@@ -15,19 +15,19 @@ class Stylist
         return $this->id;
     }
 
-    function getName()
+    function getStylistName()
     {
-        return $this->name;
+        return $this->stylist_name;
     }
 
-    function setName($new_name)
+    function setStylistName($new_stylist_name)
     {
-        $this->name = (string) $new_name;
+        $this->stylist_name = (string) $new_stylist_name;
     }
 
     function save()
     {
-        $executed = $GLOBALS['DB']->exec("INSERT INTO stylists (name) VALUES ('{$this->getName()}');");
+        $executed = $GLOBALS['DB']->exec("INSERT INTO stylists (stylist_name) VALUES ('{$this->getStylistName()}');");
         if ($executed) {
             $this->id= $GLOBALS['DB']->lastInsertId();
             return true;
@@ -41,9 +41,9 @@ class Stylist
        $returned_stylists = $GLOBALS['DB']->query('SELECT * FROM stylists;');
         $stylists = array();
         foreach($returned_stylists as $stylist){
-            $name = $stylist['name'];
+            $stylist_name = $stylist['stylist_name'];
             $id = $stylist['id'];
-            $new_stylist = new Stylist($name, $id);
+            $new_stylist = new Stylist($stylist_name, $id);
             array_push($stylists, $new_stylist);
         }
         return $stylists;
@@ -66,7 +66,7 @@ class Stylist
         $returned_stylists->bindParam(':id', $search_id, PDO::PARAM_STR);
         $returned_stylists->execute();
         foreach($returned_stylists as $stylist) {
-            $stylist_name = $stylist['name'];
+            $stylist_name = $stylist['stylist_name'];
             $stylist_id = $stylist['id'];
             if ($stylist_id == $search_id) {
               $found_stylist = new Stylist($stylist_name, $stylist_id);
@@ -75,11 +75,11 @@ class Stylist
         return $found_stylist;
     }
 
-    function update($new_name)
+    function update($new_stylist_name)
     {
-        $executed = $GLOBALS['DB']->exec("UPDATE stylists SET name = '{$new_name}' WHERE id = {$this->getId()};");
+        $executed = $GLOBALS['DB']->exec("UPDATE stylists SET name = '{$new_stylist_name}' WHERE id = {$this->getId()};");
         if ($executed) {
-           $this->setName($new_name);
+           $this->setStylistName($new_stylist_name);
            return true;
         } else {
            return false;
@@ -100,14 +100,15 @@ class Stylist
     {
         $clients = array();
         $returned_clients = $GLOBALS['DB']->query("SELECT * FROM clients WHERE stylist_id = {$this->getId()};");
-        foreach($returned_clients as $client) {
-            $name = $client['name'];
+        foreach ($returned_clients as $client) {
+            $client_name = $client['client_name'];
             $stylist_id = $client['stylist_id'];
             $id = $client['id'];
-            $new_client = new Client($name, $stylist_id, $id);
+            $new_client = new Client($client_name, $stylist_id, $id);
             array_push($clients, $new_client);
         }
         return $clients;
     }
+
 }
 ?>

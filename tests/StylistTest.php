@@ -6,6 +6,7 @@
     */
 
     require_once 'src/Stylist.php';
+    require_once 'src/Client.php';
 
     $server = 'mysql:host=localhost:8889;dbname=hair_salon_test';
     $username = 'root';
@@ -17,28 +18,29 @@
     {
 
         protected function tearDown()
-       {
+        {
          Stylist::deleteAll();
-       }
+         Client::deleteAll();
+        }
 
        function testSave()
        {
            //Arrange
-           $name = 'Roger';
-           $test_stylist = new Stylist($name);
+           $stylist_name = 'Roger';
+           $test_stylist = new Stylist($stylist_name);
 
            //Act
            $executed = $test_stylist->save();
 
            //Assert
-           $this->assertTrue($executed, 'Task not successfully saved to database');
+           $this->assertTrue($executed, 'Stylist not successfully saved to the database');
        }
 
        function testGetId()
        {
            //Arrange
-           $name = 'Roger';
-           $test_stylist = new Stylist($name);
+           $stylist_name = 'Roger';
+           $test_stylist = new Stylist($stylist_name);
            $test_stylist->save();
 
            //Act
@@ -48,43 +50,43 @@
            $this->assertEquals(true, is_numeric($result));
        }
 
-        function testGetName()
+        function testGetStylistName()
         {
             // Arrange
-            $name = 'Roger';
-            $test_stylist = new Stylist($name);
+            $stylist_name = 'Roger';
+            $test_stylist = new Stylist($stylist_name);
 
             //Act
-            $result = $test_stylist->getName();
+            $result = $test_stylist->getStylistName();
 
             //Assert
-            $this->assertEquals($name, $result);
+            $this->assertEquals($stylist_name, $result);
         }
 
-        function testSetName()
+        function testSetStylistName()
         {
             //Arrange
-            $name = 'Roger';
-            $test_stylist = new Stylist($name);
+            $stylist_name = 'Roger';
+            $test_stylist = new Stylist($stylist_name);
             $new_name = 'Charlie';
 
             //Act
-            $test_stylist->setName($new_name);
-            $result = $test_stylist->getName();
+            $test_stylist->setStylistName($new_stylist_name);
+            $result = $test_stylist->getStylistName();
 
             //Assert
-            $this->assertEquals($new_name, $result);
+            $this->assertEquals($new_stylist_name, $result);
         }
 
 
         function testGetAll()
          {
              //Arrange
-             $name = 'Roger';
-             $test_stylist = new Stylist($name);
+             $stylist_name = 'Roger';
+             $test_stylist = new Stylist($stylist_name);
              $test_stylist->save();
-             $name2 = 'Melissa';
-             $test_stylist2 = new Stylist($name2);
+             $stylist_name2 = 'Melissa';
+             $test_stylist2 = new Stylist($stylist_name2);
              $test_stylist2->save();
 
              //Act
@@ -96,11 +98,11 @@
          function testDeleteAll()
          {
              // Arrange
-             $name = 'Roger';
-             $test_stylist = new Stylist($name);
+             $stylist_name = 'Roger';
+             $test_stylist = new Stylist($stylist_name);
              $test_stylist->save();
-             $name2 = 'Melissa';
-             $test_stylist2 = new Stylist($name2);
+             $stylist_name2 = 'Melissa';
+             $test_stylist2 = new Stylist($stylist_name2);
              $test_stylist2->save();
 
              //Act
@@ -115,15 +117,14 @@
         function testFind()
         {
             //Arrange
-            $name = 'Roger';
-            $name2 = "Melissa";
-            $test_stylist = new Stylist($name);
+            $stylist_name = 'Roger';
+            $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
-            $test_stylist2 = new Stylist($name2);
+            $stylist_name2 = "Melissa";
+            $test_stylist2 = new Stylist($stylist_name2);
             $test_stylist2->save();
             //Act
-            $id = $test_stylist->getId();
-            $result = Stylist::find($id);
+            $result = Stylist::find($test_stylist->getId());
             //Assert
             $this->assertEquals($test_stylist, $result);
         }
@@ -131,28 +132,28 @@
         function testUpdate()
         {
             //Arrange
-            $name = 'Roger';
-            $test_stylist = new Stylist($name);
+            $stylist_name = 'Roger';
+            $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
 
-            $new_name = 'Melissa';
+            $new_stylist_name = 'Melissa';
 
             //Act
-            $test_stylist->update($new_name);
+            $test_stylist->update($new_stylist_name);
 
             //Assert
-            $this->assertEquals('Melissa', $test_stylist->getName());
+            $this->assertEquals('Melissa', $test_stylist->getStylistName());
         }
 
         function testDelete()
         {
             //Arrange
-            $name = "Roger";
-            $test_stylist = new Stylist($name);
+            $stylist_name = "Roger";
+            $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
 
-            $name2 = "Melissa";
-            $test_stylist2 = new Stylist($name2);
+            $stylist_name2 = "Melissa";
+            $test_stylist2 = new Stylist($stylist_name2);
             $test_stylist2->save();
 
 
@@ -161,6 +162,39 @@
 
             //Assert
             $this->assertEquals([$test_stylist2], Stylist::getAll());
+        }
+
+        function testGetClients()
+        {
+            //Arrange
+            $stylist_name = 'Roger';
+            $test_stylist = new Stylist($stylist_name);
+            $test_stylist->save();
+            $test_stylist_id = $test_stylist->getId();
+
+            $stylist_name2 = 'Melissa';
+            $test_stylist2 = new Stylist($stylist_name2);
+            $test_stylist2->save();
+            $test_stylist_id2 = $test_stylist2->getId();
+
+            $client_name = 'Frank';
+            $test_client = new Client($client_name, $test_stylist_id);
+            $test_client->save();
+
+            $client_name2 = 'Dean';
+            $test_client2 = new Client($client_name2, $test_stylist_id);
+            $test_client2->save();
+
+            $client_name3 = 'Sammy';
+            $test_client3 = new Client($client_name3, $test_stylist_id2);
+            $test_client3->save();
+
+            //Act
+
+            $result = $test_stylist->getClients();
+
+            //Assert
+            $this->assertEquals([$test_client, $test_client2], $result);
         }
     }
 ?>
