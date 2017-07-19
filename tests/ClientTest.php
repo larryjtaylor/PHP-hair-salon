@@ -18,7 +18,6 @@
 
         protected function tearDown()
         {
-            Stylist::deleteAll();
             Client::deleteAll();
         }
 
@@ -47,8 +46,8 @@
             $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
 
-            $client_name = 'Frank';
             $stylist_id = $test_stylist->getId();
+            $client_name = 'Frank';
             $test_client = new Client($client_name, $stylist_id);
             $test_client->save();
 
@@ -66,8 +65,8 @@
             $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
 
-            $client_name = 'Charlie';
             $stylist_id = $test_stylist->getId();
+            $client_name = 'Charlie';
             $test_client = new Client($client_name, $stylist_id);
             $test_client->save();
 
@@ -86,8 +85,8 @@
             $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
 
-            $client_name = 'Charlie';
             $stylist_id = $test_stylist->getId();
+            $client_name = 'Charlie';
             $test_client = new Client($client_name, $stylist_id);
             $test_client->save();
             $new_client_name = 'Sammy';
@@ -107,8 +106,8 @@
             $test_stylist = new Stylist($stylist_name);
             $test_stylist->save();
 
-            $client_name = 'Frank';
             $stylist_id = $test_stylist->getId();
+            $client_name = 'Frank';
             $test_client = new Client($client_name, $stylist_id);
             $test_client->save();
 
@@ -179,9 +178,9 @@
 
             //Act
             Client::deleteAll();
+            $result = Client::getAll();
 
             //Assert
-            $result = Client::getAll();
             $this->assertEquals([], $result);
         }
 
@@ -216,7 +215,7 @@
             $test_stylist->save();
             $stylist_id = $test_stylist->getId();
 
-            $client_name = 'Dean';
+            $client_name = 'Frank';
             $test_client = new Client($client_name, $stylist_id);
             $test_client->save();
 
@@ -226,7 +225,7 @@
             $test_client->update($new_client_name);
 
             //Assert
-            $this->assertEquals('Dean', $test_client->getClientName());
+            $this->assertEquals($new_client_name, $test_client->getClientName());
         }
 
         function testDelete()
@@ -247,7 +246,7 @@
 
 
             //Act
-            $test_client2->delete();
+            $test_client->delete();
 
             //Assert
             $this->assertEquals([$test_client2], Client::getAll());

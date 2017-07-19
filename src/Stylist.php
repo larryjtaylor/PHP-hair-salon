@@ -67,9 +67,9 @@ class Stylist
         $returned_stylists->execute();
         foreach($returned_stylists as $stylist) {
             $stylist_name = $stylist['stylist_name'];
-            $stylist_id = $stylist['id'];
-            if ($stylist_id == $search_id) {
-              $found_stylist = new Stylist($stylist_name, $stylist_id);
+            $id = $stylist['id'];
+            if ($id == $search_id) {
+              $found_stylist = new Stylist($stylist_name, $id);
             }
         }
         return $found_stylist;
@@ -77,7 +77,7 @@ class Stylist
 
     function update($new_stylist_name)
     {
-        $executed = $GLOBALS['DB']->exec("UPDATE stylists SET name = '{$new_stylist_name}' WHERE id = {$this->getId()};");
+        $executed = $GLOBALS['DB']->exec("UPDATE stylists SET stylist_name = '{$new_stylist_name}' WHERE id = {$this->getId()};");
         if ($executed) {
            $this->setStylistName($new_stylist_name);
            return true;
@@ -108,6 +108,16 @@ class Stylist
             array_push($clients, $new_client);
         }
         return $clients;
+    }
+
+    function deleteClients()
+    {
+        $executed = $GLOBALS['DB']->exec("DELETE FROM clients WHERE stylist_id = {$this->getId()};");
+        if ($executed) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

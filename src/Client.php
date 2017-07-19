@@ -22,14 +22,14 @@ class Client
         $this->client_name = (string) $new_client_name;
     }
 
+    function setStylistId($new_stylist_id)
+    {
+        $this->stylist_id = (int) $new_stylist_id;
+    }
+
     function getStylistId()
    {
        return $this->stylist_id;
-   }
-
-   function setStylistId($new_stylist_id)
-   {
-       $this->new_stylist_id = (int) $new_stylist_id;
    }
 
    function getId()
@@ -92,7 +92,7 @@ class Client
 
     function update($new_client_name)
     {
-        $executed = $GLOBALS['DB']->exec("UPDATE clients SET name = '{$new_client_name}' WHERE id = {$this->getId()};");
+        $executed = $GLOBALS['DB']->exec("UPDATE clients SET client_name = '{$new_client_name}' WHERE id = {$this->getId()};");
         if ($executed) {
            $this->setClientName($new_client_name);
            return true;

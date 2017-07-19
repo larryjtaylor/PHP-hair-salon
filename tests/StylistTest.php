@@ -1,10 +1,8 @@
 <?php
-
     /**
     * @backupGlobals disabled
     * @backupStaticAttributes disabled
     */
-
     require_once 'src/Stylist.php';
     require_once 'src/Client.php';
 
@@ -55,6 +53,7 @@
             // Arrange
             $stylist_name = 'Roger';
             $test_stylist = new Stylist($stylist_name);
+            $test_stylist->save();
 
             //Act
             $result = $test_stylist->getStylistName();
@@ -68,7 +67,9 @@
             //Arrange
             $stylist_name = 'Roger';
             $test_stylist = new Stylist($stylist_name);
-            $new_name = 'Charlie';
+            $test_stylist->save();
+
+            $new_stylist_name = 'Charlie';
 
             //Act
             $test_stylist->setStylistName($new_stylist_name);
@@ -195,6 +196,26 @@
 
             //Assert
             $this->assertEquals([$test_client, $test_client2], $result);
+        }
+
+        function testDeleteClients()
+        {
+            // Arrange
+            $stylist_name = "Roger";
+            $test_stylist = new Stylist($stylist_name);
+            $test_stylist->save();
+            $stylist_id = $test_stylist->getId();
+            $client_name = "Frank";
+            $test_client = new Client($client_name, $stylist_id);
+            $test_client->save();
+            $client_name2 = "Dean";
+            $test_client2 = new Client($client_name2, $stylist_id);
+            $test_client2->save();
+            // Act
+            $test_stylist->deleteClients();
+            $result = $test_stylist->getClients();
+            // Assert
+            $this->assertEquals([], $result);
         }
     }
 ?>
