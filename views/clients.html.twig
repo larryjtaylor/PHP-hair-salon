@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <title>Salon</title>
+    </head>
+    <body>
+        <h1>Clients</h1>
+
+        {% if clients is not empty %}
+            <p>Here are all your clients:</p>
+            <ul>
+                {% for client in clients %}
+                    <li>{{ client.getClientName }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form action="/edit_client" id="edit_client_info">
+            <div class="form-group">
+                <input type="hidden" name="client_id" value="{{ client.getId }}">
+                <input type="hidden" name="stylist_id" value="{{ client.getStylistId }}">
+                <input placeholder="{{ client.getName }}" class="form-control" type="text" name="new_name_cl" id="new_name_cl">
+            </div>
+            <button type="submit" class="btn btn-info">Edit</button>
+        </form>
+
+        <form action='/clients' method='post'>
+            <label for='client_name'>Client name</label>
+            <input id='client_name' name='client_name' type='text'>
+
+            <button type='submit'>Add client</button>
+        </form>
+
+        <form action="/delete_client" id="delete_client">
+            <input type="hidden" name="client_id" value="{{ client.getId }}">
+            <input type="hidden" name="stylist_id" value="{{ client.getStylistId }}">
+            <button type="submit" class="btn btn-danger">Delete Client</button>
+        </form>
+        
+        <form action='/delete_clients' method='post'>
+            <button type='submit'>Clear</button>
+        </form>
+
+        <p><a href='/'>Home</a></p>
+    </body>
+</html>

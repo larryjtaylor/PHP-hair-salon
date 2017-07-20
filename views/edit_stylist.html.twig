@@ -1,14 +1,14 @@
 <html>
     <head>
         <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
-        <title>Scher's Shears</title>
+        <title>Hair Salon</title>
     </head>
     <body>
+        <div class="jumbotron">
+            <h1>Salon</h1>
+            <h2>People Editor</h2>
+        </div>
         <div class="container">
-            <div class="jumbotron">
-                <h1>Scher's Shears</h1>
-                <h2>Stylist and Client Management Portal</h2>
-            </div>
             <h3>Edit information about {{ stylist.getName }} below: </h3>
             <form action="/edit_stylist" id="edit_stylist_info">
                 <div class="form-group">
