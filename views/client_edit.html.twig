@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+        <title>Client edit</title>
+    </head>
+    <body>
+        <div class='container'>
+            <h1>Edit {{ client.getClientName }}</h1>
+            <br>
+            <form action='/clients/{{ client.getId }}' method='post'>
+              <input name='_method' type='hidden' value='patch'>
+              <label for='name'>Rename {{ client.getClientName }}:</label><br>
+              <input id='client_name' name='client_name' type='text' placeholder='New name for {{ client.getClientName }}' required><br><br>
+
+              <button type='submit' class='btn-success'>Update Client</button>
+            </form>
+
+            <form action='/clients/{{ client.getId }}' method='post'>
+                <input name='_method' type='hidden' value='delete'>
+
+                <button type='submit' class='btn-danger'>Delete client</button>
+            </form>
+            <br>
+        </div>
+    </body>
+</html>

@@ -1,31 +1,34 @@
 <html>
     <head>
-        <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
-        <title>Hair Salon</title>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+        <title>Salon</title>
     </head>
     <body>
-        <div class="jumbotron">
-            <h1>Welcome to the salon!</h1>
-        </div>
-        <div class="container">
-            <p><a href="/stylists">Click here</a> to see all of the stylists and to add a stylist.</p>
-            <p><a href="/clients">Click here</a> to see all of the clients and to add a client.</p>
-
+        <div class='container'>
+            <div class="jumbotron">
+                <h1>Welcome to the Salon</h1><br>
+            </div>
             {% if stylists is not empty %}
-                <h3>Pick a stylist:</h3>
-                <ul class="list-unstyled">
+                <p>Here are all your stylists:</p>
+                <ul>
                     {% for stylist in stylists %}
-                        <li>
-                            <h4><a href="/stylists/{{ stylist.getId }}"> {{ stylist.getStylistName }}</a> |
-                            <a class="btn btn-success" href="/stylist/{{ stylist.getId }}/edit">Edit</a></h4>
-                        </li>
+                        <li><a href="/stylists/{{ stylist.getId }}">{{ stylist.getStylistName }}</a></li>
                     {% endfor %}
+                </ul>
             {% else %}
-                <h3>You have not added any stylists yet!</h3>
+              <p>There are no stylists yet!</p>
             {% endif %}
 
-            <a href="/all_stylists_deleted">Delete All Stylists</a> <br>
-            <a href="/all_clients_deleted">Delete All Clients</a>
+            <br>
+            <form action='/' method='post'>
+                <label for='stylist_name'>Add stylist</label><br>
+                <input id='stylist_name' name='stylist_name' type='text' placeholder='Name goes here' required><br><br>
+                <button type='submit' class='btn-info'>Add</button>
+            </form>
+            <br><br>
+            <form action='/delete_stylists' method='post'>
+                <button type='submit' class='btn-danger'>Remove all stylists</button>
+            </form>
         </div>
     </body>
 </html>
